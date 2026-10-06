@@ -1,0 +1,18 @@
+{
+  "eventTime": "2026-10-05T10:15:00Z",
+  "eventID": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
+  "eventSource": "iam.amazonaws.com",
+  "eventName": "AttachUserPolicy",
+  "awsRegion": "eu-central-1",
+  "sourceIPAddress": "203.0.113.10",
+  "userIdentity": {
+    "type": "IAMUser",
+    "userName": "test-user"
+  },
+  "requestParameters": {
+    "userName": "test-user",
+    "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+  },
+  "responseElements": null,
+  "userAgent": "aws-cli/2.15.0"
+}
