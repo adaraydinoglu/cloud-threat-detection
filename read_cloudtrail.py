@@ -2,7 +2,7 @@ import json
 import sqlite3
 
 with open("sample_cloudtrail.json", "r") as file:
-    event = json.load(file)
+    events = json.load(file)
 
 connection = sqlite3.connect("cloud_threat.db")
 cursor = connection.cursor()
@@ -23,32 +23,33 @@ CREATE TABLE IF NOT EXISTS cloudtrail_events (
 )
 """)
 
-cursor.execute("""
-INSERT OR IGNORE INTO cloudtrail_events (
-    event_id,
-    event_time,
-    event_name,
-    event_source,
-    user,
-    source_ip,
-    aws_region,
-    user_identity_type,
-    user_agent,
-    request_parameters
-)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-""", (
-    event["eventID"],
-    event["eventTime"],
-    event["eventName"],
-    event["eventSource"],
-    event["userIdentity"]["userName"],
-    event["sourceIPAddress"],
-    event["awsRegion"],
-    event["userIdentity"]["type"],
-    event["userAgent"],
-    json.dumps(event["requestParameters"])
-))
+for event in events:
+    cursor.execute("""
+    INSERT OR IGNORE INTO cloudtrail_events (
+        event_id,
+        event_time,
+        event_name,
+        event_source,
+        user,
+        source_ip,
+        aws_region,
+        user_identity_type,
+        user_agent,
+        request_parameters
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        event["eventID"],
+        event["eventTime"],
+        event["eventName"],
+        event["eventSource"],
+        event["userIdentity"]["userName"],
+        event["sourceIPAddress"],
+        event["awsRegion"],
+        event["userIdentity"]["type"],
+        event["userAgent"],
+        json.dumps(event["requestParameters"])
+    ))
 
 connection.commit()
 
